@@ -15,7 +15,19 @@ const LocationSelector = () => {
   useEffect(() => {
     fetchCountries();
   }, []);
-
+  
+  useEffect(() => {
+    if (selectedCountry) {
+      fetchStates(selectedCountry);
+    }
+  }, [selectedCountry]);
+  
+  useEffect(() => {
+    if (selectedState) {
+      fetchCities(selectedCountry, selectedState);
+    }
+  }, [selectedState]);
+  
   // Fetch all countries
   const fetchCountries = async () => {
     try {
@@ -57,26 +69,25 @@ const LocationSelector = () => {
   };
 
   // Handle country selection
+  
   const handleCountryChange = (event) => {
     const country = event.target.value;
     setSelectedCountry(country);
-    setSelectedState("");
-    setSelectedCity("");
-    if (country) fetchStates(country);
+    console.log("Selected Country:", country);
   };
-
-  // Handle state selection
+  
   const handleStateChange = (event) => {
     const state = event.target.value;
     setSelectedState(state);
-    setSelectedCity("");
-    if (state) fetchCities(selectedCountry, state);
+    console.log("Selected State:", state);
   };
-
-  // Handle city selection
+  
   const handleCityChange = (event) => {
-    setSelectedCity(event.target.value);
+    const city = event.target.value;
+    setSelectedCity(city);
+    console.log("Selected City:", city);
   };
+  
 
   return (
     <div>
@@ -124,12 +135,13 @@ const LocationSelector = () => {
 
       {/* Display Selected Location */}
       <div>
-        <h3>Selected Location</h3>
-        <p>
-          Country: {selectedCountry || "None"}, State: {selectedState || "None"},
-          City: {selectedCity || "None"}
-        </p>
-      </div>
+  <h3>Selected Location</h3>
+  <p>
+    Country: {selectedCountry || "None"}, State: {selectedState || "None"},
+    City: {selectedCity || "None"}
+  </p>
+</div>
+
     </div>
   );
 };
